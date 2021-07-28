@@ -120,6 +120,23 @@ function renderCount(){
   }
 }
 
+function getImagesFromStorage(){
+  let storedImages = localStorage.getItem('image');
+  if (storedImages){
+    let parsedInfo = JSON.parse(storedImages);
+    for(let image of parsedInfo){
+      let newImage = new Image(image.name, image.imgPath);
+      Image.allImages.push(newImage);
+      newImage.renderImage();
+    }
+  }
+}
+
+function putImagesInStorage(){
+  let stringifiedArray = JSON.stringify(Image.allImages);
+  localStorage.setItem('image', stringifiedArray);
+}
+
 function handleClick(e){
   const imageClicked = e.target.id;
   if(imageClicked === 'firstPic' || imageClicked === 'secondPic' || imageClicked === 'thirdPic'){
@@ -148,6 +165,7 @@ function handleClick(e){
     function results(){
     renderCount();
     makeItemChart();
+    putImagesInStorage();
     remove();
     }
     }
@@ -178,5 +196,6 @@ Image.allImages.push(new Image('Unicorn', './assets/unicorn.jpg'));
 Image.allImages.push(new Image('Water-can', './assets/water-can.jpg'));
 Image.allImages.push(new Image('Wine-glass', './assets/wine-glass.jpg'));
 
+getImagesFromStorage();
 getThreeImages();
 renderImage();
