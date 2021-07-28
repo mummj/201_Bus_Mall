@@ -4,6 +4,7 @@
 
 const sectionElm = document.getElementById('link');
 const ulElm = document.getElementById('number_clicks');
+const ulViewsElm = document.getElementById('number_views');
 const contentPicsElm = document.getElementById('pic_content');
 const firstPicElement = document.getElementById('firstPic');
 const secondPicElement = document.getElementById('secondPic');
@@ -23,6 +24,8 @@ let thirdPic = null;
 function Image(name, imgPath){
   this.name = name;
   this.imgPath = imgPath;
+  this.clicks = 0;
+  this.views = 0;
 }
 
 Image.allImages = [];
@@ -31,7 +34,6 @@ Image.allImages = [];
 Image.prototype.renderImage = function(img, h2){
   img.src = this.imgPath;
   h2.textContent = this.name;
-  this.clicks = 0;
   this.views++;
 }
 
@@ -53,6 +55,7 @@ function getThreeImages(){
       thirdPic = Image.allImages[picThree]; 
     }
     cantUse.push[thirdPic];
+    // console.log(cantUse);
 }
 
 function renderImage(){
@@ -113,28 +116,39 @@ function remove(){
 
 function renderCount(){
   ulElm.textContent = '';
+  let voteHeader = document.createElement('h2');
+  voteHeader.textContent = 'Number of Votes';
+  ulElm.appendChild(voteHeader);
+  let viewHeader = document.createElement('h2');
+  viewHeader.textContent = 'Number of Views';
+  ulViewsElm.appendChild(viewHeader);
   for (let img of Image.allImages){
       let liElm = document.createElement('li');
       liElm.textContent = `${img.name}: ${img.clicks}`;
       ulElm.appendChild(liElm);
   }
+  for (let img of Image.allImages){
+    let liViewsElm = document.createElement('li');
+    liViewsElm.textContent = `${img.name}: ${img.views}`;
+    ulViewsElm.appendChild(liViewsElm);
+  }
 }
 
-function getImagesFromStorage(){
-  let storedImages = localStorage.getItem('image');
-  if (storedImages){
-    let parsedInfo = JSON.parse(storedImages);
-    for(let image of parsedInfo){
-      let newImage = new Image(image.name, image.imgPath);
+function getClicksFromStorage(){
+  let storedClicks = localStorage.getItem('clicks');
+  if (storedClicks){
+    let parsedInfo = JSON.parse(storedClicks);
+    for(let clicks of parsedInfo){
+      let newImage = new Image(image.name, image.clicks);
       Image.allImages.push(newImage);
       newImage.renderImage();
     }
   }
 }
 
-function putImagesInStorage(){
-  let stringifiedArray = JSON.stringify(Image.allImages);
-  localStorage.setItem('image', stringifiedArray);
+function putClicksInStorage(){
+  let stringifiedArray = JSON.stringify(Image.allImages.clicks);
+  localStorage.setClicks('clicks', stringifiedArray);
 }
 
 function handleClick(e){
@@ -165,8 +179,8 @@ function handleClick(e){
     function results(){
     renderCount();
     makeItemChart();
-    putImagesInStorage();
     remove();
+    putClicksInStorage();
     }
     }
 } 
@@ -196,6 +210,6 @@ Image.allImages.push(new Image('Unicorn', './assets/unicorn.jpg'));
 Image.allImages.push(new Image('Water-can', './assets/water-can.jpg'));
 Image.allImages.push(new Image('Wine-glass', './assets/wine-glass.jpg'));
 
-getImagesFromStorage();
+getClicksFromStorage();
 getThreeImages();
 renderImage();
