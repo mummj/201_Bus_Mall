@@ -138,7 +138,7 @@ function getClicksFromStorage(){
   let storedClicks = localStorage.getItem('clicks');
   if (storedClicks){
     let parsedInfo = JSON.parse(storedClicks);
-    for(let clicks of parsedInfo){
+    for(let click of parsedInfo){
       let newImage = new Image(image.name, image.clicks);
       Image.allImages.push(newImage);
       newImage.renderImage();
@@ -147,8 +147,8 @@ function getClicksFromStorage(){
 }
 
 function putClicksInStorage(){
-  let stringifiedArray = JSON.stringify(Image.allImages.clicks);
-  localStorage.setClicks('clicks', stringifiedArray);
+  let stringifiedArray = JSON.stringify(Image.allImages);
+  localStorage.setClick('clicks', stringifiedArray);
 }
 
 function handleClick(e){
