@@ -4,6 +4,7 @@
 
 const sectionElm = document.getElementById('link');
 const ulElm = document.getElementById('number_clicks');
+const ulViewsElm = document.getElementById('number_views');
 const contentPicsElm = document.getElementById('pic_content');
 const firstPicElement = document.getElementById('firstPic');
 const secondPicElement = document.getElementById('secondPic');
@@ -23,6 +24,8 @@ let thirdPic = null;
 function Image(name, imgPath){
   this.name = name;
   this.imgPath = imgPath;
+  this.clicks = 0;
+  this.views = 0;
 }
 
 Image.allImages = [];
@@ -31,7 +34,6 @@ Image.allImages = [];
 Image.prototype.renderImage = function(img, h2){
   img.src = this.imgPath;
   h2.textContent = this.name;
-  this.clicks = 0;
   this.views++;
 }
 
@@ -53,6 +55,7 @@ function getThreeImages(){
       thirdPic = Image.allImages[picThree]; 
     }
     cantUse.push[thirdPic];
+    // console.log(cantUse);
 }
 
 function renderImage(){
@@ -109,30 +112,44 @@ function makeItemChart() {
 
 function remove(){
   document.getElementById('showResults').style.display = 'none';
+  document.getElementById('img0container').style.display = 'none';
+  document.getElementById('img1container').style.display = 'none';
+  document.getElementById('img2container').style.display = 'none';
 }
 
 function renderCount(){
   ulElm.textContent = '';
+  let voteHeader = document.createElement('h2');
+  voteHeader.textContent = 'Number of Votes';
+  ulElm.appendChild(voteHeader);
+  let viewHeader = document.createElement('h2');
+  viewHeader.textContent = 'Number of Views';
+  ulViewsElm.appendChild(viewHeader);
   for (let img of Image.allImages){
       let liElm = document.createElement('li');
       liElm.textContent = `${img.name}: ${img.clicks}`;
       ulElm.appendChild(liElm);
   }
+  for (let img of Image.allImages){
+    let liViewsElm = document.createElement('li');
+    liViewsElm.textContent = `${img.name}: ${img.views}`;
+    ulViewsElm.appendChild(liViewsElm);
+  }
 }
 
-function getImagesFromStorage(){
-  let storedImages = localStorage.getItem('image');
-  if (storedImages){
-    let parsedInfo = JSON.parse(storedImages);
+function getImageFromStorage(){
+  let storedImage = localStorage.getItem('image');
+  if (storedImage){
+    let parsedInfo = JSON.parse(storedImage);
     for(let image of parsedInfo){
       let newImage = new Image(image.name, image.imgPath);
       Image.allImages.push(newImage);
-      newImage.renderImage();
+      // newImage.renderImage();
     }
   }
 }
 
-function putImagesInStorage(){
+function putImageInStorage(){
   let stringifiedArray = JSON.stringify(Image.allImages);
   localStorage.setItem('image', stringifiedArray);
 }
@@ -153,7 +170,7 @@ function handleClick(e){
     getThreeImages();
     renderImage();
   }
-  if(counter === 10){
+  if(counter === 25){
     contentPicsElm.removeEventListener('click', handleClick);
     let h3Elm = document.createElement('h3');
     sectionElm.appendChild(h3Elm);
@@ -165,11 +182,15 @@ function handleClick(e){
     function results(){
     renderCount();
     makeItemChart();
-    putImagesInStorage();
     remove();
+    putImageInStorage();
     }
     }
 } 
+
+
+  
+ 
 
 //listener
 
@@ -177,25 +198,25 @@ contentPicsElm.addEventListener('click', handleClick);
 
 
 //call functions
-Image.allImages.push(new Image('Banana', './assets/banana.jpg'));
-Image.allImages.push(new Image('Bathroom', './assets/bathroom.jpg'));
-Image.allImages.push(new Image('Boots', './assets/boots.jpg'));
-Image.allImages.push(new Image('Breakfast', './assets/breakfast.jpg'));
-Image.allImages.push(new Image('Bubblegum', './assets/bubblegum.jpg'));
-Image.allImages.push(new Image('Chair', './assets/chair.jpg'));
-Image.allImages.push(new Image('Cthulhu', './assets/cthulhu.jpg'));
-Image.allImages.push(new Image('Dog-duck', './assets/dog-duck.jpg'));
-Image.allImages.push(new Image('Dragon', './assets/dragon.jpg'));
-Image.allImages.push(new Image('Pen', './assets/pen.jpg'));
-Image.allImages.push(new Image('Pet-sweep', './assets/pet-sweep.jpg'));
-Image.allImages.push(new Image('Scissors', './assets/scissors.jpg'));
-Image.allImages.push(new Image('Shark', './assets/shark.jpg'));
-Image.allImages.push(new Image('Sweep', './assets/sweep.png'));
-Image.allImages.push(new Image('Tauntaun', './assets/tauntaun.jpg'));
-Image.allImages.push(new Image('Unicorn', './assets/unicorn.jpg'));
-Image.allImages.push(new Image('Water-can', './assets/water-can.jpg'));
-Image.allImages.push(new Image('Wine-glass', './assets/wine-glass.jpg'));
+  Image.allImages.push(new Image('Banana', './assets/banana.jpg'));
+  Image.allImages.push(new Image('Bathroom', './assets/bathroom.jpg'));
+  Image.allImages.push(new Image('Boots', './assets/boots.jpg'));
+  Image.allImages.push(new Image('Breakfast', './assets/breakfast.jpg'));
+  Image.allImages.push(new Image('Bubblegum', './assets/bubblegum.jpg'));
+  Image.allImages.push(new Image('Chair', './assets/chair.jpg'));
+  Image.allImages.push(new Image('Cthulhu', './assets/cthulhu.jpg'));
+  Image.allImages.push(new Image('Dog-duck', './assets/dog-duck.jpg'));
+  Image.allImages.push(new Image('Dragon', './assets/dragon.jpg'));
+  Image.allImages.push(new Image('Pen', './assets/pen.jpg'));
+  Image.allImages.push(new Image('Pet-sweep', './assets/pet-sweep.jpg'));
+  Image.allImages.push(new Image('Scissors', './assets/scissors.jpg'));
+  Image.allImages.push(new Image('Shark', './assets/shark.jpg'));
+  Image.allImages.push(new Image('Sweep', './assets/sweep.png'));
+  Image.allImages.push(new Image('Tauntaun', './assets/tauntaun.jpg'));
+  Image.allImages.push(new Image('Unicorn', './assets/unicorn.jpg'));
+  Image.allImages.push(new Image('Water-can', './assets/water-can.jpg'));
+  Image.allImages.push(new Image('Wine-glass', './assets/wine-glass.jpg'));
 
-getImagesFromStorage();
+getImageFromStorage();
 getThreeImages();
 renderImage();
