@@ -42,6 +42,7 @@ main > #aside{
   justify-content: center;
   flex-direction: column;
   text-align: center;
+  padding:10px;
 }
 footer{
   
@@ -53,6 +54,7 @@ footer{
 h2 {
   color:white;
   margin-bottom: 10px;
+  text-align: center;
 }
 button{
   padding:25px;
