@@ -21,7 +21,7 @@ let secondPic = null;
 let thirdPic = null;
 
 //constructor function
-function Image(name, imgPath){
+function Image(name, imgPath,){
   this.name = name;
   this.imgPath = imgPath;
   this.clicks = 0;
@@ -68,10 +68,12 @@ function makeItemChart() {
   var ctx = document.getElementById('myChart').getContext('2d');
   let imageNames = [];
   let imageClicks = [];
+  let imageViews = [];
 
   for(let image of Image.allImages){
     imageNames.push(image.name);
     imageClicks.push(image.clicks);
+    imageViews.push(image.views);
   }
 
   var myChart = new Chart(ctx, {
@@ -80,7 +82,7 @@ function makeItemChart() {
         labels: imageNames,
         datasets: [{
             label: '# of Votes',
-            data: imageClicks,
+            data: imageClicks, 
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -97,8 +99,29 @@ function makeItemChart() {
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
             ],
-            borderWidth: 1
-        }]
+            borderWidth: 1  
+        },
+      {
+        label: '# of Views',
+        data: imageViews, 
+        backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1  
+      },]
     },
     options: {
         scales: {
@@ -142,16 +165,18 @@ function getImageFromStorage(){
   if (storedImage){
     let parsedInfo = JSON.parse(storedImage);
     for(let image of parsedInfo){
-      let newImage = new Image(image.name, image.imgPath);
+      let newImage = new Image(image.name, image.imgPath, image.clicks, image.views);
       Image.allImages.push(newImage);
-      // newImage.renderImage();
     }
   }
 }
 
 function putImageInStorage(){
   let stringifiedArray = JSON.stringify(Image.allImages);
+  if (stringifiedArray = []){
   localStorage.setItem('image', stringifiedArray);
+  }
+  else (localStorage.setItem('image', stringifiedArray));
 }
 
 function handleClick(e){
