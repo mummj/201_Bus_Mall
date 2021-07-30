@@ -2,11 +2,24 @@ body{
   background-color: black;
 }
 header{
+  display:flex;
+  justify-content: space-between;
   background-color: black;
   color:white;
   text-align: center;
   font-size: 36px;
   border: 2px solid white;
+  font-family:cursive;
+}
+img{
+  height: 50px;
+  width: 100px;
+}
+#img1{
+  margin-left:2%;
+}
+#img2{
+  margin-right: 2%;
 }
 main{
   display:grid;
